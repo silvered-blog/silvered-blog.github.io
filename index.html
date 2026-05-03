@@ -167,7 +167,7 @@ print(&quot;全部导入成功！&quot;)
 <p><strong>·   在当前根目录文件夹中新建python文件，输入<code>import gensim</code>，若不会出现黄色波浪线，则说明虚拟环境配置成功。</strong></p>
 <hr>
 <h3 id="下载数据"><a href="#下载数据" class="headerlink" title="下载数据"></a>下载数据</h3><p><strong>环境配置好之后就要先下载数据了。</strong></p>
-<p>仓库中给出了要下载的数据表格，下载脚本要读取S1表格的Accessions列的文本数据，所以需要把这一列的数据保存为一个.txt文件，我这里直接给出我自己保存好的.txt文件：<a href="%5Cdownloads%5Ctxt%5Cs1_accessions.txt">S1_accessions.txt</a>，其中包含707个基因数据。</p>
+<p>仓库中给出了要下载的数据表格，下载脚本要读取S1表格的Accessions列的文本数据，所以需要把这一列的数据保存为一个.txt文件，我这里直接给出我自己保存好的.txt文件：<a href="/downloads/txt/s1_accessions.txt">S1_accessions.txt</a>，其中包含707个基因数据。</p>
 <p><strong>这里是仓库中的下载脚本代码<a href="/downloads/code/Down_data.py?download=1">Down_data.py</a></strong>，其原理就是读取本地保存的文本列表，然后按列表里的基因名称从NCBI数据库服务器下载到本地文件夹并保存为.fasta文件。</p>
 <p>在下载数据之前，需要说明的是，由于NCBI服务器在海外，所以下载基因组数据时如果不挂VPN的话，很有可能要下载30小时左右，因此<strong>推荐在运行代码前先在后台挂上VPN，并且注册一个NCBI账号</strong>，这两个我在这就不做过多步骤说明了。</p>
 <p>因为仓库中的下载脚本每次启动都是重新从第一个数据开始下载（不管这个数据是否已经下载好了），而就算挂了VPN下载时长一般也在几个小时，难免会出现程序崩溃或者需要关停脚本的情况，这时候如果重新运行下载脚本的话，又需要重新下，很耗时间，所以我自己改了下代码，<strong>让已经下载好的数据直接被跳过，不会下载第二遍</strong>；另外，S1表里有很多NZ_开头的数据，仓库里的下载脚本会忽略这些数据，所以我<strong>对索引逻辑也做了修改</strong>。</p>
@@ -182,20 +182,20 @@ print(&quot;全部导入成功！&quot;)
 <hr>
 <h3 id="词向量编码"><a href="#词向量编码" class="headerlink" title="词向量编码"></a>词向量编码</h3><p><strong>接下来要依赖训练得到的词向量模型文件把原始的.fasta基因数据编码成.npy文件。</strong><br>在这一步，仓库其实已经给了已经编码好的数据集了，如果要使用仓库里的编码数据集，其实就可以直接跳到下一步了。</p>
 <p>但是我想自己把编码这个流程也走一遍，所以用AI辅助写了一个<strong>编码脚本：<a href="/downloads/code/My_encode_genomes.py?download=1">My_encode_genomes.py</a></strong>。</p>
-<p>接下来是准备编码的标签文件，我用来编码的原始数据就是S1表里的那707个数据，所以把那707个数据的Accessions列和Labels列保存为.txt文件就能被编码脚本识别读取了（<strong>注意每行的Accession和Label要用空格隔开</strong>），这里也直接给出保存好的.txt文件：<a href="%5Cdownloads%5Ctxt%5Cs1_accessions_labels.txt">s1_accessions_labels.txt</a></p>
-<p><strong>最后可以得到数据集<a href="%5Cdownloads%5Czip%5CMy_CNN_3Conv_6mer_256_Dataset.zip">My_CNN_3Conv_6mer_256_Dataset.zip</a></strong></p>
+<p>接下来是准备编码的标签文件，我用来编码的原始数据就是S1表里的那707个数据，所以把那707个数据的Accessions列和Labels列保存为.txt文件就能被编码脚本识别读取了（<strong>注意每行的Accession和Label要用空格隔开</strong>），这里也直接给出保存好的.txt文件：<a href="/downloads/txt/s1_accessions_labels.txt">s1_accessions_labels.txt</a></p>
+<p><strong>最后可以得到数据集<a href="/downloads/zip/My_CNN_3Conv_6mer_256_Dataset.zip">My_CNN_3Conv_6mer_256_Dataset.zip</a></strong></p>
 <p>不过我训练得到的数据集文件大小要比师兄仓库里给的数据集文件小很多，应该是因为他用的数据不止S1表里的数据。</p>
 <hr>
-<h3 id="训练分类模型"><a href="#训练分类模型" class="headerlink" title="训练分类模型"></a>训练分类模型</h3><p><strong>仓库里已经给了完整的训练模型，不过我这里也再给一遍我调好参数的训练模型<a href="%5Cdownloads%5Ccode%5CMy_CNN_3Conv.py">My_CNN_3Conv.py</a></strong></p>
+<h3 id="训练分类模型"><a href="#训练分类模型" class="headerlink" title="训练分类模型"></a>训练分类模型</h3><p><strong>仓库里已经给了完整的训练模型，不过我这里也再给一遍我调好参数的训练模型<a href="/downloads/code/My_CNN_3Conv.py">My_CNN_3Conv.py</a></strong></p>
 <p>这里没什么好说的，把路径参数改一下就没问题了。</p>
 <p><strong>训练好之后你同样会得到一个.txt的日志文件和一个<code>CNN_3Conv_Word2vec_6</code>模型文件。</strong></p>
 <hr>
 <h3 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h3><p><strong>终于到最后一步，也就是测试训练好的分类模型文件了。</strong></p>
 <p>仓库里已经有现成的预测代码：<a target="_blank" rel="noopener" href="https://gitee.com/tang-yonghong/model/blob/master/%E4%BB%A3%E7%A0%81/predict.py">predict.py</a></p>
-<p><strong>但是！！！</strong><br><strong>我在跑预测脚本的时候，电脑内存依旧炸了。</strong>（办公本害人）<br><strong>所以我又对预测脚本做了点小修改，把原来的一次性存储改为了累加求和，这里给出修改后的代码：<a href="%5Cdownloads%5Ccode%5CMy_predict.py">My_predict.py</a></strong></p>
+<p><strong>但是！！！</strong><br><strong>我在跑预测脚本的时候，电脑内存依旧炸了。</strong>（办公本害人）<br><strong>所以我又对预测脚本做了点小修改，把原来的一次性存储改为了累加求和，这里给出修改后的代码：<a href="/downloads/code/My_predict.py">My_predict.py</a></strong></p>
 <p><strong>最后运行结束后同样会得到一个.txt 日志文件。</strong></p>
 <hr>
-<h3 id="计算准确率、精确率、召回率和F1"><a href="#计算准确率、精确率、召回率和F1" class="headerlink" title="计算准确率、精确率、召回率和F1"></a>计算准确率、精确率、召回率和F1</h3><p><strong>为了知道自己训练的分类模型表现怎么样，我写了一个计算脚本：<a href="%5Cdownloads%5Ccode%5CMy_calculate_accuracy.py">My_calculate_accuracy.py</a></strong></p>
+<h3 id="计算准确率、精确率、召回率和F1"><a href="#计算准确率、精确率、召回率和F1" class="headerlink" title="计算准确率、精确率、召回率和F1"></a>计算准确率、精确率、召回率和F1</h3><p><strong>为了知道自己训练的分类模型表现怎么样，我写了一个计算脚本：<a href="/downloads/code/My_calculate_accuracy.py">My_calculate_accuracy.py</a></strong></p>
 <p><strong>这里贴出我自己第一次走完流程得到的数据：<img src="/downloads/images/result1.png" alt="result"></strong></p>
 <p>实际是707个数据，但是我不知道为什么漏了两个，不过我也没有精力排查了，累。</p>
 <hr>
@@ -216,7 +216,7 @@ print(&quot;全部导入成功！&quot;)
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2026/05/03/metaProbiotics%E5%A4%8D%E7%8E%B0%E6%B5%81%E7%A8%8B%E3%80%81%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97%E4%B8%8E%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" data-id="cuid0QqOdZ2yGVU9bXiTV-Tjb" data-title="metaProbiotics复现流程、学习心得与踩坑记录" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2026/05/03/metaProbiotics%E5%A4%8D%E7%8E%B0%E6%B5%81%E7%A8%8B%E3%80%81%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97%E4%B8%8E%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" data-id="cuiddk7iA00znXghHuMTGhdCd" data-title="metaProbiotics复现流程、学习心得与踩坑记录" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -229,6 +229,23 @@ print(&quot;全部导入成功！&quot;)
 
 
 
+
+<div id="giscus-comments" style="margin-top: 40px; padding: 20px; border-top: 1px solid #eee;">
+  <script src="https://giscus.app/client.js"
+          data-repo="silvered-blog/silvered-blog.github.io"
+          data-repo-id="R_kgDOSTEZaA"
+          data-category="Announcements"
+          data-category-id="DIC_kwDOSTEZaM4C8P5k"
+          data-mapping="pathname"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="bottom"
+          data-theme="light"
+          data-lang="zh-CN"
+          crossorigin="anonymous"
+          async>
+  </script>
+</div>
 
   
     <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
@@ -270,7 +287,7 @@ print(&quot;全部导入成功！&quot;)
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2026/05/01/hello-world/" data-id="cuidj5KWyyVMb4CXNRQLr62Wn" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2026/05/01/hello-world/" data-id="cuidJVWWWnR04NMyYs2tN-u4v" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -281,6 +298,23 @@ print(&quot;全部导入成功！&quot;)
 
 
 
+
+<div id="giscus-comments" style="margin-top: 40px; padding: 20px; border-top: 1px solid #eee;">
+  <script src="https://giscus.app/client.js"
+          data-repo="silvered-blog/silvered-blog.github.io"
+          data-repo-id="R_kgDOSTEZaA"
+          data-category="Announcements"
+          data-category-id="DIC_kwDOSTEZaM4C8P5k"
+          data-mapping="pathname"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="bottom"
+          data-theme="light"
+          data-lang="zh-CN"
+          crossorigin="anonymous"
+          async>
+  </script>
+</div>
 
   
 
